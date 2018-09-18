@@ -1,0 +1,24 @@
+#!/usr/bin/php
+<?php
+
+use Database\Connections\ConnectionFactory;
+use Utils\{Config, CommandParser};
+
+require_once(__DIR__ . '/bootstrap.php');
+
+if (PHP_SAPI !== 'cli') {
+    die('You are not in console.');
+}
+
+$cmd = new CommandParser(__DIR__, array_slice($argv, 1));
+
+$config = new Config($cmd->getConfigPath());
+
+$connection = ConnectionFactory::create($config->get('connection', []));
+
+$obfuscator = new Obfuscator($connection);
+$obfuscator->restoreDatabaseFromDump($cmd->getInputDumpPath());
+$obfuscator->obfuscate($config->get('schema', []));
+$obfuscator->createDumpFromDatabase($cmd->getOutputDumpPath());
+
+echo 'Ok.';
