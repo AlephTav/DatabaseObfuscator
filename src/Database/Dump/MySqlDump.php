@@ -121,7 +121,7 @@ class MySqlDump implements Dump
      * @param string $command
      * @return int zero on success and non-zero on failure.
      */
-    private function executeCommand(string $command): int
+    protected function executeCommand(string $command): int
     {
         system($command, $error);
         return $error;

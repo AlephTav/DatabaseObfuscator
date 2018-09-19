@@ -29,13 +29,15 @@ class ConditionalExpression extends AbstractExpression
             $this->sql .= ' ' . $connector . ' ';
         }
 
-        if ($operator === null && $value === null) {
-            $this->sql .= $this->convertOperandToString($column);
-        } else if ($value === null) {
-            $this->sql .= $column . ' ' . $this->convertValueToString($operator, (string)$column);
+        if ($operator !== null) {
+            if (\is_string($operator)) {
+                $this->sql .= $this->convertOperandToString($column) . ' ' .
+                    $operator . ' ' . $this->convertValueToString($value, $operator);
+            } else {
+                $this->sql .= $column . ' ' . $this->convertValueToString($operator, $column);
+            }
         } else {
-            $this->sql .= $this->convertOperandToString($column) . ' ' .
-                $operator . ' ' . $this->convertValueToString($value, (string)$operator);
+            $this->sql .= $this->convertOperandToString($column);
         }
 
         return $this;

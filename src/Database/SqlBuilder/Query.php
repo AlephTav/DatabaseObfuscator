@@ -345,9 +345,9 @@ class Query extends AbstractExpression
     private function typeUnion(string $type, Query $query): Query
     {
         if ($this->union) {
-            $this->union = [[$type, $query]];
+            $this->union[] = [$type, $query];
         } else {
-            $self = new Query(
+            $self = new self(
                 $this->connection,
                 $this->from,
                 $this->select,

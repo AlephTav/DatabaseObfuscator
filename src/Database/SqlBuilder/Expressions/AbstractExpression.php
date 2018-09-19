@@ -35,7 +35,7 @@ class AbstractExpression
         return new RawExpression($expression);
     }
 
-    public static function conditions(): ConditionalExpression
+    public static function condition(): ConditionalExpression
     {
         return new ConditionalExpression();
     }
